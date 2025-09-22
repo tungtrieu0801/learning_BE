@@ -19,8 +19,9 @@ export class CertificationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.certificationsService.findOne(+id);
+  async findOne(@Param('id') id: number, @Query('language') language: string) {
+    const certification = await this.certificationsService.findOne(id, language || 'en');
+    return certification;
   }
 
   @Patch(':id')
