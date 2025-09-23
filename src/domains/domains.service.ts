@@ -5,11 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Domain } from './entities/domain.entity';
 import { Repository } from 'typeorm';
 import { DomainTranslation } from './entities/domain.translation.entity';
+import { Certification } from 'src/certifications/entities/certification.entity';
 
 @Injectable()
 export class DomainsService {
 
   constructor (
+    @InjectRepository(Certification)
+    private certificationRepository: Repository<Certification>,
+
     @InjectRepository(Domain)
     private domainRepository: Repository<Domain>,
 
@@ -18,6 +22,27 @@ export class DomainsService {
   ) {}
 
   async create(createDomainDto: CreateDomainDto) {
+
+    // Check if certification exists
+    const certification = await this.certificationRepository.findOne({
+      where: { id: createDomainDto.certificationId },
+    })
+
+    if (!certification) {
+      throw new Error('Certification not found');
+    }
+
+    const domain = this.domainRepository.create({
+      code: createDomainDto.code,
+      orderNo: createDomainDto.orderNumber,
+      certificationId: createDomainDto.certificationId,
+      domainTranslations: createDomainDto.translations.map((t) => ({
+        languageCode: t.langeuageCode,
+        name: t.name,
+        description: t.description,
+      })),
+    })
+
     return 'This action adds a new domain';
   }
 
