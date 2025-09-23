@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CertificationTranslation } from "./certification-translation.entity";
+import { Domain } from "src/domains/entities/domain.entity";
 
 @Entity('certifications')
 export class Certification {
@@ -17,4 +18,7 @@ export class Certification {
     
     @OneToMany(() => CertificationTranslation, translation => translation.certification, { cascade: true })
     translations: CertificationTranslation[];
+
+    @OneToMany(() => Domain, domain => domain.certification, { cascade: true })
+    domains: Domain[];
 }

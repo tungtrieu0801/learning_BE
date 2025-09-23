@@ -11,6 +11,14 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   )
+  // main.ts
+  app.enableCors({
+    origin: '*', // hoặc ['http://localhost:5173'] nếu muốn chỉ cho FE
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

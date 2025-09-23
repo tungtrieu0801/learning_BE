@@ -18,6 +18,11 @@ export class CertificationsController {
     return this.certificationsService.findAll(query);
   }
 
+  @Get("test")
+  test() {
+    return "testing api";
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number, @Query('language') language: string) {
     const certification = await this.certificationsService.findOne(id, language || 'en');
