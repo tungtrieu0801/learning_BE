@@ -3,7 +3,7 @@ import { IsString } from "class-validator";
 export class DomainTranslationDto {
 
     @IsString()
-    langeuageCode: string;
+    languageCode: string;
 
     @IsString()
     name: string;

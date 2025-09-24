@@ -6,6 +6,7 @@ import { Domain } from './entities/domain.entity';
 import { Repository } from 'typeorm';
 import { DomainTranslation } from './entities/domain.translation.entity';
 import { Certification } from 'src/certifications/entities/certification.entity';
+import { ensureExists } from 'src/utils/check-entity.utils';
 
 @Injectable()
 export class DomainsService {
@@ -37,21 +38,35 @@ export class DomainsService {
       orderNo: createDomainDto.orderNumber,
       certificationId: createDomainDto.certificationId,
       domainTranslations: createDomainDto.translations.map((t) => ({
-        languageCode: t.langeuageCode,
+        languageCode: t.languageCode,
         name: t.name,
         description: t.description,
       })),
     })
 
-    return 'This action adds a new domain';
+    return this.domainRepository.save(domain);
   }
 
-  findAll() {
-    return `This action returns all domains`;
+  async findAll(certificationId: number) {
+    await ensureExists(this.certificationRepository, { id: certificationId }, 'Certification');
+
+    const domains = await this.domainRepository.find({
+      where: { certificationId },
+      relations: ['domainTranslations'],
+    })
+    console.log("domeains: ", domains);
+    return domains;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} domain`;
+  async getDetailDomain(certificationId: number, domainId: number) {
+    await ensureExists(this.certificationRepository, { id: certificationId }, 'Certification');
+
+    const domain = await this.domainRepository.findOneOrFail({
+      where: { id: domainId, certificationId: certificationId },
+      relations: ['domainTranslations'],
+    });
+
+    return domain;
   }
 
   update(id: number, updateDomainDto: UpdateDomainDto) {

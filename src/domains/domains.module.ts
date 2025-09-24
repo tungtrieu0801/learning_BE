@@ -4,12 +4,14 @@ import { DomainsController } from './domains.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Domain } from './entities/domain.entity';
 import { DomainTranslation } from './entities/domain.translation.entity';
+import { Certification } from 'src/certifications/entities/certification.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Domain,
-      DomainTranslation
+      DomainTranslation,
+      Certification
     ])
   ],
   controllers: [DomainsController],

@@ -12,14 +12,14 @@ export class DomainsController {
     return this.domainsService.create(createDomainDto);
   }
 
-  @Get()
-  findAll() {
-    return this.domainsService.findAll();
+  @Get(':certificationId')
+  findAll(@Param ('certificationId') certificationId: number) {
+    return this.domainsService.findAll(certificationId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.domainsService.findOne(+id);
+  findOne(@Param('certificationId') certificationId: number, @Param('id') domainId: number, ) {
+    return this.domainsService.getDetailDomain(certificationId, domainId);
   }
 
   @Patch(':id')
