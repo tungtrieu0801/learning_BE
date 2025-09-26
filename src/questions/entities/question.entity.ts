@@ -1,6 +1,7 @@
 import { Domain } from "src/domains/entities/domain.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { QuestionTranslation } from "./question-translation.entity";
+import { Answer } from "src/answers/entities/answer.entity";
 
 @Entity("questions")
 export class Question {
@@ -10,9 +11,12 @@ export class Question {
     @Column()
     domainId: number;
 
-    @ManyToOne(() => Domain, (domain) => domain.quetsions, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Domain, (domain) => domain.questions, { onDelete: 'CASCADE' })
     domain: Domain;
 
     @OneToMany(() => QuestionTranslation, (translation) => translation.question, { cascade: true })
     questionTranslations: QuestionTranslation[];
+
+    @OneToMany(() => Answer, (answer) => answer.question, { onDelete: 'CASCADE'})
+    answers: Answer[]
 }

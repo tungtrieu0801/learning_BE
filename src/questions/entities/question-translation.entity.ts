@@ -13,10 +13,10 @@ export class QuestionTranslation {
     languageCode: string;
 
     @Column()
-    text: string;
+    questionText: string; // Content
 
     @Column({ type: 'text', nullable: true })
-    description: string;
+    explanation: string; //giải thích chung cho toàn bộ câu hỏi.
 
     @ManyToOne(() => Question, (question) => question.questionTranslations, { onDelete: 'CASCADE' })
     question: Question;

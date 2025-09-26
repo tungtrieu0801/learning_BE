@@ -25,5 +25,5 @@ export class Domain {
   domainTranslations: DomainTranslation[];
 
   @OneToMany(() => Question, (question) => question.domain, { cascade: true })
-  quetsions: Question[];
+  questions: Question[];
 }

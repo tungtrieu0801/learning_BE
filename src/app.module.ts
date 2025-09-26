@@ -4,9 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeedModule } from './seed/seed.module';
 import { TagsModule } from './tags/tags.module';
 import { QuestionsModule } from './questions/questions.module';
-import { ObjectivesModule } from './objectives/objectives.module';
 import { DomainsModule } from './domains/domains.module';
 import { CertificationsModule } from './certifications/certifications.module';
+import { AnswersModule } from './answers/answers.module';
 
 @Module({
   imports: [
@@ -28,10 +28,10 @@ import { CertificationsModule } from './certifications/certifications.module';
     }),
     CertificationsModule,
     DomainsModule,
-    ObjectivesModule,
     QuestionsModule,
     TagsModule,
     SeedModule,
+    AnswersModule,
   ],
 })
 export class AppModule {}
