@@ -17,6 +17,6 @@ export class Question {
     @OneToMany(() => QuestionTranslation, (translation) => translation.question, { cascade: true })
     questionTranslations: QuestionTranslation[];
 
-    @OneToMany(() => Answer, (answer) => answer.question, { onDelete: 'CASCADE'})
+    @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
     answers: Answer[]
 }

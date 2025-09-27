@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { GetAllQuestionDto } from './dto/request/get-all.question.dto';
 
 @Controller('questions')
 export class QuestionsController {
@@ -13,8 +14,8 @@ export class QuestionsController {
   }
 
   @Get()
-  findAll() {
-    return this.questionsService.findAll();
+  findAll(@Query() query: GetAllQuestionDto) {
+    return this.questionsService.findAll(query);
   }
 
   @Get(':id')

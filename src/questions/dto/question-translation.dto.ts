@@ -1,10 +1,13 @@
+import { IsString } from "class-validator";
+
 export class QuestionTranslationDto {
     
-    domainId: number;
-
+    @IsString()
     languageCode: string;
 
+    @IsString()
     questionText: string;
 
+    @IsString()
     explanation: string;
 }
