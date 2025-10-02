@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { DomainsService } from './domains.service';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
+import { GetAllDomainDto } from './dto/GetAllDomainDto';
 
 @Controller('domains')
 export class DomainsController {
@@ -12,9 +13,9 @@ export class DomainsController {
     return this.domainsService.create(createDomainDto);
   }
 
-  @Get(':certificationId')
-  findAll(@Param ('certificationId') certificationId: number) {
-    return this.domainsService.findAll(certificationId);
+  @Get()
+  findAll(@Query() query: GetAllDomainDto) {
+    return this.domainsService.findAll(query);
   }
 
   @Get(':id')

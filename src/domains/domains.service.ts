@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { DomainTranslation } from './entities/domain.translation.entity';
 import { Certification } from 'src/certifications/entities/certification.entity';
 import { ensureExists } from 'src/utils/check-entity.utils';
+import { GetAllDomainDto } from './dto/GetAllDomainDto';
 
 @Injectable()
 export class DomainsService {
@@ -47,15 +48,31 @@ export class DomainsService {
     return this.domainRepository.save(domain);
   }
 
-  async findAll(certificationId: number) {
-    await ensureExists(this.certificationRepository, { id: certificationId }, 'Certification');
+  async findAll(params: GetAllDomainDto) {
+    const { certificationId, language, page, limit } = params;
 
-    const domains = await this.domainRepository.find({
-      where: { certificationId },
-      relations: ['domainTranslations'],
-    })
-    console.log("domeains: ", domains);
-    return domains;
+    const sql = this.domainRepository
+      .createQueryBuilder('d')
+      .leftJoinAndSelect('d.domainTranslations', 'dt')
+      .leftJoin('d.certification', 'c')
+      .where('1=1');
+    if (certificationId) {
+      sql.andWhere('d.certificationId = :certificationId', { certificationId });
+    }
+    if (language) {
+      sql.andWhere('dt.languageCode = :language', { language });
+    }
+    sql.skip((page -1) * limit).take(limit);
+    const [items, total] = await sql.getManyAndCount();
+    return {
+      data: items,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total/limit),
+      },
+    };
   }
 
   async getDetailDomain(certificationId: number, domainId: number) {
