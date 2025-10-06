@@ -24,7 +24,7 @@ export class CertificationsService {
       code,
       vendor,
       translations: translations.map(translation => this.certificationTranslationRepo.create({
-        languageCode: translation.langeuageCode,
+        languageCode: translation.languageCode,
         name: translation.name,
         description: translation.description,
       })),
@@ -79,7 +79,17 @@ export class CertificationsService {
     return `This action updates a #${id} certification`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} certification`;
+  async deteleCertification(id: string) {
+    const result = await this.certificationRepository.delete(id);
+    if (result.affected && result.affected > 0) {
+      return {
+        message: 'Success',
+        code: '1'
+      }
+    }
+    return {
+      message: 'Error',
+      code: '0'
+    };
   }
 }

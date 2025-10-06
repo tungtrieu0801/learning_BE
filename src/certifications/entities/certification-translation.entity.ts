@@ -7,7 +7,7 @@ export class CertificationTranslation {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Certification, certification => certification.translations)
+    @ManyToOne(() => Certification, certification => certification.translations, { onDelete: 'CASCADE'})
     certification: Certification;
 
     @Column({ length: 5, name: 'language_code' })

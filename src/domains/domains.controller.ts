@@ -18,10 +18,10 @@ export class DomainsController {
     return this.domainsService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('certificationId') certificationId: number, @Param('id') domainId: number, ) {
-    return this.domainsService.getDetailDomain(certificationId, domainId);
-  }
+  // @Get(':id')
+  // findOne(@Param('certificationId') certificationId: number, @Param('id') domainId: number, ) {
+  //   return this.domainsService.getDetailDomain(certificationId, domainId);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDomainDto: UpdateDomainDto) {

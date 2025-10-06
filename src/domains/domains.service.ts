@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -75,22 +75,36 @@ export class DomainsService {
     };
   }
 
-  async getDetailDomain(certificationId: number, domainId: number) {
-    await ensureExists(this.certificationRepository, { id: certificationId }, 'Certification');
+async getDetailDomain(certificationId: number, domainId: number) {
+  await ensureExists(this.certificationRepository, { id: certificationId }, 'Certification');
 
-    const domain = await this.domainRepository.findOneOrFail({
-      where: { id: domainId, certificationId: certificationId },
-      relations: ['domainTranslations'],
-    });
+  const domain = await this.domainRepository.findOne({
+    where: { id: domainId, certificationId: certificationId },
+    relations: ['domainTranslations'],
+  });
 
-    return domain;
+  if (!domain) {
+    throw new NotFoundException('Domain not found');
   }
+
+  return domain;
+}
 
   update(id: number, updateDomainDto: UpdateDomainDto) {
     return `This action updates a #${id} domain`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} domain`;
+  async remove(id: number) {
+    const result = await this.domainRepository.delete(id);
+    if (result.affected && result.affected > 0) {
+      return {
+        message: 'Success',
+        code: '1'
+      }
+    }
+    return {
+      message: 'Error',
+      code: '0'
+    };
   }
 }
